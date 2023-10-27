@@ -2,28 +2,33 @@ import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
+//import java.nio.charset.StandardCharsets;
+import java.io.File;
+//import java.nio.file.Paths;
+//import java.util.stream.Stream;
 import java.io.*;
+
 class Bible extends JFrame implements ItemListener {
 	// frame
-	static JFrame f;
+	static JFrame f, ff;
 	// label
-	static JLabel l, l1;
+	static JLabel l, l1, l3;
 	// combobox
 	static JComboBox c1;
 	static JComboBox c2;
+	static JComboBox c3;
+	
 	// textbox
 	static JTextArea textArea;
+	final static JPanel p = new JPanel();
 	// main class
 	public static void main(String[] args)
 	{
 		// create a new frame
+		
 		f = new JFrame("Bible");
 		// create a object
-		Bible s = new Bible();
+		final Bible s = new Bible();
 		// set layout of frame
 		f.getContentPane().setLayout(new FlowLayout());
 		// array of string containing cities
@@ -42,7 +47,7 @@ class Bible extends JFrame implements ItemListener {
 		// add ItemListener
 		c2.addItemListener(s);
 		// create a new panel
-		JPanel p = new JPanel();
+		//p = = new JPanl;
 		p.setLayout(new GridLayout(3,1,0,3));
 		p.add(l);
 		// add combobox to panel
@@ -60,6 +65,33 @@ class Bible extends JFrame implements ItemListener {
 		f.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		textArea.setText(ReadFileToString("Genesis.txt"));
 		textArea.setCaretPosition(0);
+		
+		// bible image button 
+        JButton button = new JButton("Bible Image Gallery");
+		button.addActionListener(new ActionListener() { 
+		  public void actionPerformed(ActionEvent e) { 
+  			f.getContentPane().removeAll();
+  			p.removeAll();
+  			String s11[] = {"1","2","3","4","5","6","7","8"};
+  			c3 = new JComboBox(s11);
+  			c3.addItemListener(s);
+  			l = new JLabel("Bible Images:");
+  			p.setLayout(new GridLayout(4,0,2,2));
+  			p.add(l);
+  			p.add(c3);
+  			f.getContentPane().add(p,BorderLayout.WEST);		
+  			l3 = new JLabel("");
+  			ImageIcon imageIcon = new ImageIcon(new ImageIcon(Bible.class.getResource("1.jpg")).getImage().getScaledInstance(900, 600, Image.SCALE_SMOOTH));
+  			l3.setIcon(imageIcon);
+  			f.getContentPane().add(l3);
+  			// frame code
+  			//f.pack();
+  			f.setSize(950, 800);
+  			//f.show();
+		  } 
+		} );
+		p.add(button);
+		
 		// frame code
 		f.pack();
 		// set the size of frame
@@ -77,6 +109,11 @@ class Bible extends JFrame implements ItemListener {
 			textArea.setText(ReadFileToString(c2.getSelectedItem() + ".txt"));
 			textArea.setCaretPosition(0);
 		}
+		if (e.getSource() == c3) {
+			ImageIcon imageIcon = new ImageIcon(new ImageIcon(getClass().getResource(c3.getSelectedItem() + ".jpg")).getImage().getScaledInstance(900, 600, Image.SCALE_SMOOTH));
+			l3.setIcon(imageIcon);
+		}
+		
 	}
     private static String ReadFileToString(String filePath) 
        {
